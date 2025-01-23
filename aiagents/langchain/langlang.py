@@ -12,7 +12,7 @@ nltk.download('punkt_tab')
 nltk.download('averaged_perceptron_tagger_eng')
 
 if "GOOGLE_API_KEY" not in os.environ:
-    os.environ["GOOGLE_API_KEY"] = getpass.getpass("AIzaSyDAeCuDnUG1eho08PGnPI5rMpOsqisA4TI")
+    os.environ["GOOGLE_API_KEY"] = getpass.getpass("")
 
 
 def load_pdf(pdf_path):
@@ -22,14 +22,14 @@ def load_pdf(pdf_path):
 
 # genai.configure(api_key=os.environ['GOOGLE_API_KEY'])
 #model = genai.GenerativeModel("gemini-1.5-flash")
-embeddings_function = GoogleGenerativeAIEmbeddings(model= "models/embedding-001", google_api_key='AIzaSyC4vCzD2fqyOHK1ohczKrz8tDI5dMHyauU')
+embeddings_function = GoogleGenerativeAIEmbeddings(model= "models/embedding-001", google_api_key='')
 
 pages = load_pdf('./metasploit.pdf')
 text_to_chunks = CharacterTextSplitter(chunk_size = 500, chunk_overlap=0)
 chunks_of_text = text_to_chunks.split_documents(pages)
 
 docsearch = Chroma.from_documents(chunks_of_text, embeddings_function)
-chain = RetrievalQA.from_chain_type(llm=GoogleGenerativeAI(model="gemini-pro", google_api_key='AIzaSyC4vCzD2fqyOHK1ohczKrz8tDI5dMHyauU'), chain_type='stuff', retriever=docsearch.as_retriever())
+chain = RetrievalQA.from_chain_type(llm=GoogleGenerativeAI(model="gemini-pro", google_api_key=''), chain_type='stuff', retriever=docsearch.as_retriever())
 
 qa_res = chain.invoke("how can I scan vulnerabilities with NeXpose?")
 print(qa_res)
